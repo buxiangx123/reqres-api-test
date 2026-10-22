@@ -1,0 +1,14 @@
+# 虚拟环境
+venv/
+env/
+.venv/
+
+# Python 缓存
+__pycache__/
+*.pyc
+
+# PyCharm 自带的配置
+.idea/
+
+# pytest 运行产生的临时记录
+.pytest_cache/
