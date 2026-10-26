@@ -2,10 +2,10 @@ import pytest
 import requests
 
 
-@pytest.fixture
-def base_url():
-    """这个就是 fixture：它负责准备一个公共数据"""
-    return "https://reqres.in/api"
+# @pytest.fixture
+# def base_url():
+#     """这个就是 fixture：它负责准备一个公共数据"""
+#     return "https://reqres.in/api"
 
 
 def test_get_users(base_url):
@@ -14,8 +14,9 @@ def test_get_users(base_url):
     assert resp.status_code == 200
     print("\n✅ 用了fixture的测试通过")
 
-    import pytest
-    import requests
+
+
+
 
     # ⬇️ 这一段顶格，不要在 class 里面！
 @pytest.fixture(scope="class")
