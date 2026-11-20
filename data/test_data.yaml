@@ -1,0 +1,17 @@
+# test_data.yaml
+# 创建用户的测试数据
+create_user:
+  - name: "morheus"
+    job: "leader"
+  - name: "jerry"
+    job: "tester"
+  - name: "tom"
+    job: "developer"
+
+# 查询用户的测试数据
+get_user:
+  id: 1
+
+# 删除用户的测试数据
+delete_user:
+  user_id: ""  # 留空，后续由创建用户的返回结果动态填入

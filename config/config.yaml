@@ -1,0 +1,16 @@
+# 测试环境配置
+
+test_env: "dev"  # 当前激活的环境：dev, qa, prod
+
+# 顶层不再放 base_url，统一由 envs[test_env] 决定，避免两处配置打架
+
+envs:
+  dev:
+    base_url: "https://reqres.in/api"
+    timeout: 30
+  qa:
+    base_url: "https://qa-api.example.com/api"
+    timeout: 20
+  prod:
+    base_url: "https://prod-api.example.com/api"
+    timeout: 60

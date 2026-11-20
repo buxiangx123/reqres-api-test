@@ -10,9 +10,14 @@ venv/
 env/
 .venv/
 
-# Allure 报告临时数据
-allure-results/
-allure-report/
+# Allure 报告产物（目录名用下划线，与项目实际一致）
+allure_results/
+allure_report/
+report/
+
+# 日志文件
+logs/
+*.log
 
 # IDE
 .idea/
