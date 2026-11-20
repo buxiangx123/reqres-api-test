@@ -1,11 +1,16 @@
+import os
 import pymysql
-
 
 class DBUtil:
     """数据库工具类：封装连接、查询、增删改和关闭"""
 
-    def __init__(self, host="127.0.0.1", port=3306, user="root",
-                 password="123456", database="autotest_db", charset="utf8mb4"):
+    def __init__(self,
+                 host=os.getenv("DB_HOST", "127.0.0.1"),
+                 port=int(os.getenv("DB_PORT", "3306")),
+                 user=os.getenv("DB_USER", "root"),
+                 password=os.getenv("DB_PASSWORD", "123456"),
+                 database=os.getenv("DB_NAME", "autotest_db"),
+                 charset="utf8mb4"):
         self.host = host
         self.port = port
         self.user = user
