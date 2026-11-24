@@ -76,13 +76,12 @@ jobs:
               conn.commit()
               cur.execute("SHOW CREATE TABLE users")
               print(cur.fetchone()[1])
-          conn.close()
           PY
 
       - name: Start Mock server (Flask)
         run: |
           mkdir -p logs
-          nohup python mock_serverapp.py > logs/mock_server.log 2>&1 &
+          nohup python mock_server/app.py > logs/mock_server.log 2>&1 &
           python - <<'PY'
           import socket, time, sys
           for _ in range(30):
@@ -108,4 +107,4 @@ jobs:
 
       - name: Dump Flask log on failure
         if: failure()
-        run: cat logs/mock_server.log
+        run: cat logs/mock_server.log || echo "无 Flask 日志（服务未启动）"
