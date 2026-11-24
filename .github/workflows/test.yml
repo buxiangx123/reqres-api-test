@@ -81,7 +81,7 @@ jobs:
       - name: Start Mock server (Flask)
         run: |
           mkdir -p logs
-          nohup python mock_server/app.py > logs/mock_server.log 2>&1 &
+          FLASK_DEBUG=0 nohup python mock_server/app.py > logs/mock_server.log 2>&1 &
           python - <<'PY'
           import socket, time, sys
           for _ in range(30):
