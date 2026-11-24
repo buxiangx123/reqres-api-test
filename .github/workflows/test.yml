@@ -1,0 +1,111 @@
+name: API Autotest CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    # 起一个 MySQL 5.7 服务容器（贴合你本地版本），关键是强制 utf8mb4
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_ROOT_PASSWORD: ci_root_pwd
+          MYSQL_DATABASE: autotest_db
+          MYSQL_CHARACTER_SET_SERVER: utf8mb4
+          MYSQL_COLLATION_SERVER: utf8mb4_general_ci
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h 127.0.0.1 -uroot -pci_root_pwd"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=12
+
+    # 注入环境变量 → DBUtil 读到这些，就不连本地 127.0.0.1 的 MySQL 而连 service 容器
+    env:
+      DB_HOST: 127.0.0.1
+      DB_PORT: "3306"
+      DB_USER: root
+      DB_PASSWORD: ci_root_pwd
+      DB_NAME: autotest_db
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Init schema (utf8mb4)
+        run: |
+          python - <<'PY'
+          import os, time, pymysql
+          cfg = dict(
+              host=os.environ["DB_HOST"],
+              port=int(os.environ["DB_PORT"]),
+              user=os.environ["DB_USER"],
+              password=os.environ["DB_PASSWORD"],
+              database=os.environ["DB_NAME"],
+          )
+          sql = open("sql/init.sql", encoding="utf-8").read()
+          for attempt in range(12):
+              try:
+                  conn = pymysql.connect(**cfg)
+                  break
+              except pymysql.err.OperationalError:
+                  time.sleep(2)
+          else:
+              raise SystemExit("MySQL 未能就绪")
+          with conn, conn.cursor() as cur:
+              for stmt in filter(None, [s.strip() for s in sql.split(";")]):
+                  cur.execute(stmt)
+              conn.commit()
+              cur.execute("SHOW CREATE TABLE users")
+              print(cur.fetchone()[1])
+          conn.close()
+          PY
+
+      - name: Start Mock server (Flask)
+        run: |
+          mkdir -p logs
+          nohup python mock_serverapp.py > logs/mock_server.log 2>&1 &
+          python - <<'PY'
+          import socket, time, sys
+          for _ in range(30):
+              with socket.socket() as s:
+                  if s.connect_ex(("127.0.0.1", 5000)) == 0:
+                      print("Mock server 已就绪 (port 5000)")
+                      break
+              time.sleep(1)
+          else:
+              sys.exit("Flask 未在 5000 端口起来")
+          PY
+
+      - name: Run pytest
+        # pytest.ini 的 addopts 已自带 -v 和 --alluredir，这里不用再写
+        run: pytest
+
+      - name: Upload Allure results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-results
+          path: report/allure_results/
+
+      - name: Dump Flask log on failure
+        if: failure()
+        run: cat logs/mock_server.log
