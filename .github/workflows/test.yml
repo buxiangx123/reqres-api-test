@@ -11,7 +11,6 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
-    # 起一个 MySQL 5.7 服务容器（贴合你本地版本），关键是强制 utf8mb4
     services:
       mysql:
         image: mysql:5.7
@@ -28,7 +27,6 @@ jobs:
           --health-timeout=5s
           --health-retries=12
 
-    # 注入环境变量 → DBUtil 读到这些，就不连本地 127.0.0.1 的 MySQL 而连 service 容器
     env:
       DB_HOST: 127.0.0.1
       DB_PORT: "3306"
@@ -95,7 +93,6 @@ jobs:
           PY
 
       - name: Run pytest
-        # pytest.ini 的 addopts 已自带 -v 和 --alluredir，这里不用再写
         run: pytest
 
       - name: Upload Allure results
