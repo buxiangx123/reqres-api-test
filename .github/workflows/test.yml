@@ -99,6 +99,9 @@ jobs:
 
       - name: Run pytest
         run: pytest --alluredir=allure-results
+        env:
+          TEST_ENV: ci
+          DB_NAME: reqres_test_ci
         continue-on-error: true
 
       - name: Dump Flask log on failure

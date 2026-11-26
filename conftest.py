@@ -7,7 +7,8 @@ conftest.py —— pytest 全局配置钩子
 
 import os
 import shutil
-
+from datetime import datetime
+import sys
 
 def pytest_sessionstart(session):
     """
@@ -27,3 +28,22 @@ def pytest_sessionstart(session):
     else:
         # 目录不存在则创建（首次运行时）
         os.makedirs(allure_results_dir, exist_ok=True)
+
+
+def pytest_configure(config):
+    """生成 Allure 环境信息文件"""
+    env_dir = "allure-results"
+    os.makedirs(env_dir, exist_ok=True)
+
+    env_props = {
+        "Python": sys.version.split()[0],
+        "Platform": sys.platform,
+        "Test Environment": os.getenv("TEST_ENV", "local"),
+        "Database": os.getenv("DB_NAME", "reqres_test"),
+        "Mock Server": "http://127.0.0.1:5000",
+        "Run Time": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+    }
+
+    with open(os.path.join(env_dir, "environment.properties"), "w", encoding="utf-8") as f:
+        for k, v in env_props.items():
+            f.write(f"{k}={v}\n")
