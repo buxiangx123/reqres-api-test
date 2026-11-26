@@ -12,10 +12,11 @@ class UserApi(BaseAPI):
         )
 
     def get_user(self, user_id):
-        """获取指定用户"""
+        """2. 查询用户"""
         return self.client.send_request(
             method="GET",
-            url=f"/users/{user_id}" # 同样，只写路径
+            url=f"/users/{user_id}",  # 只写路径
+            raise_error=False  # 允许 404，由测试自行断言
         )
 
     def create_user(self, name, job):
@@ -28,12 +29,13 @@ class UserApi(BaseAPI):
         )
 
     def update_user(self, user_id, name, job):
-        """更新用户"""
+        """3. 更新用户"""
         payload = {"name": name, "job": job}
         return self.client.send_request(
             method="PUT",
-            url=f"/users/{user_id}", # 只写路径
-            json=payload
+            url=f"/users/{user_id}",  # 只写路径
+            json=payload,
+            raise_error=False  # 允许 404，由测试自行断言
         )
 
     def delete_user(self, user_id):

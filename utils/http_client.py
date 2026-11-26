@@ -34,11 +34,14 @@ class HttpClient:
         if token:
             self.session.headers.update({"Authorization": f"Bearer {token}"})
 
-    def send_request(self, method, url, **kwargs):
+    def send_request(self, method, url, raise_error=True, **kwargs):
         """
         统一的请求发送核心方法
         method: 请求方式 (GET, POST, PUT, DELETE)
         url: 接口的后半段路径 (例如: /users)
+        raise_error: 是否对 4xx/5xx 抛出异常。
+                     默认 True（保持原有行为）；
+                     测试「期望失败」的场景时传 False，由测试自行断言状态码。
         **kwargs: 接收所有额外参数 (json, params, headers, data等)
         """
         # 1. 拼接完整URL
@@ -56,8 +59,9 @@ class HttpClient:
             # session.request 比 session.get/post 更灵活，它能处理所有HTTP方法
             resp = self.session.request(method.upper(), full_url, **kwargs)
 
-            # 如果状态码不是 2xx，抛出异常（可选，看你的测试策略）
-            resp.raise_for_status()
+            # 如果状态码不是 2xx，抛出异常（可通过 raise_error=False 关闭）
+            if raise_error:
+                resp.raise_for_status()
 
             # 【新增】打印响应日志
             self.log.info(f"响应状态码: {resp.status_code}")
