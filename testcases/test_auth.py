@@ -17,7 +17,6 @@ class TestAuth:
         assert "token" in resp.json()
 
     @pytest.mark.smoke
-    @pytest.mark.rerun_failures(reruns=2, reruns_delay=1)
     def test_login_fail(self):
         """测试登录失败 (期望得到 400 错误)"""
         try:
@@ -28,5 +27,5 @@ class TestAuth:
             # 验证异常信息包含'400'
             assert '400' in str(e), f"Expected '400' in error message, got: {e}"
         except Exception as e:
-            # 抛出其他异常，让用例失败，触发重试
+            # 其他异常视为用例失败
             pytest.fail(f"Unexpected exception: {type(e).__name__}: {e}")
