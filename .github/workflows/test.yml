@@ -123,6 +123,8 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           path: allure-report
+          name: github-pages
+          retention-days: 1
 
       - name: Deploy to GitHub Pages
         if: always()
