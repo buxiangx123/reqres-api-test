@@ -10,17 +10,14 @@ class TestAuth:
         self.api = AuthApi()
 
     @pytest.mark.smoke
-    @pytest.mark.skip(reason="reqres.in 官方已废弃该登录接口，非代码问题")
     def test_login_success(self):
         """测试登录成功"""
         resp = self.api.login("sydney@fife.co", "pistol")
         assert resp.status_code == 200
         assert "token" in resp.json()
-        # ... 后面的断言可以不管，因为已经被跳过了
 
     @pytest.mark.smoke
-    # 这条好像不用了@pytest.mark.skip(reason="reqres.in 官方已废弃该登录接口，非代码问题")
-    # @pytest.mark.rerun_failures(reruns=2, reruns_delay=1)
+    @pytest.mark.rerun_failures(reruns=2, reruns_delay=1)
     def test_login_fail(self):
         """测试登录失败 (期望得到 400 错误)"""
         try:
