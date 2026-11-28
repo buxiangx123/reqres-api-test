@@ -23,7 +23,7 @@ class TestUser:
     def test_list_users(self):
         """测试获取用户列表"""
         resp = self.api.list_users()
-        assert resp.status_code == 200
+        assert resp.status_code == 999
         assert "data" in resp.json()
 
     @pytest.mark.smoke
