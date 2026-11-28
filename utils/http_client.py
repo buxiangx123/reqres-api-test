@@ -4,6 +4,8 @@ from requests.exceptions import RequestException
 from utils.config_reader import ConfigReader
 from utils.logger import logger
 
+# 全局注册表：记录所有创建过的 HttpClient 实例，供失败时留存现场
+HTTP_CLIENTS = []
 class HttpClient:
     """
     框架底层通用请求类
@@ -24,9 +26,13 @@ class HttpClient:
         # 2. 从配置中读取基础URL和超时时间，并保存为类属性
         self.base_url = self.reader.get("base_url", "")
         self.TIMEOUT = self.reader.get("timeout", 10) # 获取超时时间，默认为10秒  # 【新增】这一步让后面能找到 TIMEOUT
-
-
         self.session = requests.Session()
+        # 记录最后一次请求/响应，供失败时留存现场
+        self.last_request = None
+        self.last_response = None
+        # 登记到全局注册表
+        HTTP_CLIENTS.append(self)
+
     def set_token(self, token):
         """
         设置全局 Token，之后的请求会自动带上
@@ -57,7 +63,16 @@ class HttpClient:
 
             # 3. 使用 session.request 统一发送请求
             # session.request 比 session.get/post 更灵活，它能处理所有HTTP方法
-            resp = self.session.request(method.upper(), full_url, **kwargs)
+            # 记录请求现场
+            self.last_request = {
+                "method": method,
+                "url": full_url,
+                "params": kwargs.get("params"),
+                "json": kwargs.get("json"),
+                "data": kwargs.get("data"),
+                "headers": dict(self.session.headers),
+            }
+            resp = self.session.request(method=method, url=full_url, **kwargs)
 
             # 如果状态码不是 2xx，抛出异常（可通过 raise_error=False 关闭）
             if raise_error:
@@ -65,7 +80,13 @@ class HttpClient:
 
             # 【新增】打印响应日志
             self.log.info(f"响应状态码: {resp.status_code}")
-
+            # 记录响应现场（截断过长的响应体，避免报告过大）
+            body_text = resp.text[:2000] if resp.text else ""
+            self.last_response = {
+                "status_code": resp.status_code,
+                "elapsed_ms": round(resp.elapsed.total_seconds() * 1000, 2),
+                "body": body_text,
+            }
             # 4. 返回完整的响应对象
             return resp
 
