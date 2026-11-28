@@ -1,0 +1,6 @@
+
+ 本次测试使用的随机数据 -> 姓名: 王建平, 职业: 保险理赔
+[32m2026-11-26 16:26:38[0m | [1mINFO    [0m | [36mutils.http_client[0m:[36msend_request[0m - [1m发送 POST 请求: http://127.0.0.1:5000/api/users[0m
+[32m2026-11-26 16:26:38[0m | [1mINFO    [0m | [36mutils.http_client[0m:[36msend_request[0m - [1m请求参数: {'json': {'name': '王建平', 'job': '保险理赔'}}[0m
+[32m2026-11-26 16:26:38[0m | [1mINFO    [0m | [36mutils.http_client[0m:[36msend_request[0m - [1m响应状态码: 201[0m
+ 数据断言通过：王建平 已正确生成！

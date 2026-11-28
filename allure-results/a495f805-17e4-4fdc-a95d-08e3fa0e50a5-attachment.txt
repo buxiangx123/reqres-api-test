@@ -1,0 +1,10 @@
+[32m2026-11-26 16:26:38[0m | [1mINFO    [0m | [36mutils.http_client[0m:[36msend_request[0m - [1m发送 POST 请求: http://127.0.0.1:5000/api/users[0m
+[32m2026-11-26 16:26:38[0m | [1mINFO    [0m | [36mutils.http_client[0m:[36msend_request[0m - [1m请求参数: {'json': {'name': '罗丹丹', 'job': '锅炉工程师/技师'}}[0m
+[32m2026-11-26 16:26:38[0m | [1mINFO    [0m | [36mutils.http_client[0m:[36msend_request[0m - [1m响应状态码: 201[0m
+[32m2026-11-26 16:26:38[0m | [1mINFO    [0m | [36mutils.http_client[0m:[36msend_request[0m - [1m发送 DELETE 请求: http://127.0.0.1:5000/api/users/111[0m
+[32m2026-11-26 16:26:38[0m | [1mINFO    [0m | [36mutils.http_client[0m:[36msend_request[0m - [1m请求参数: {}[0m
+[32m2026-11-26 16:26:38[0m | [1mINFO    [0m | [36mutils.http_client[0m:[36msend_request[0m - [1m响应状态码: 204[0m
+[32m2026-11-26 16:26:38[0m | [1mINFO    [0m | [36mutils.http_client[0m:[36msend_request[0m - [1m发送 GET 请求: http://127.0.0.1:5000/api/users/111[0m
+[32m2026-11-26 16:26:38[0m | [1mINFO    [0m | [36mutils.http_client[0m:[36msend_request[0m - [1m请求参数: {}[0m
+[32m2026-11-26 16:26:39[0m | [1mINFO    [0m | [36mutils.http_client[0m:[36msend_request[0m - [1m响应状态码: 404[0m
+删除接口校验通过：状态码 204，响应体为空，且已确认删除生效

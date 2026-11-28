@@ -1,0 +1,7 @@
+🚀 正在尝试登录用户: sydney@fife.co...
+[32m2026-11-26 16:26:36[0m | [1mINFO    [0m | [36mutils.http_client[0m:[36msend_request[0m - [1m发送 POST 请求: http://127.0.0.1:5000/api/login[0m
+[32m2026-11-26 16:26:36[0m | [1mINFO    [0m | [36mutils.http_client[0m:[36msend_request[0m - [1m请求参数: {'json': {'email': 'sydney@fife.co', 'password': 'wrong_password', '_random': 855}}[0m
+
+❌ 请求异常: http://127.0.0.1:5000/api/login | 错误原因: 400 Client Error: BAD REQUEST for url: http://127.0.0.1:5000/api/login
+
+[32m2026-11-26 16:26:36[0m | [31m[1mERROR   [0m | [36mutils.http_client[0m:[36msend_request[0m - [31m[1m请求异常: 400 Client Error: BAD REQUEST for url: http://127.0.0.1:5000/api/login[0m

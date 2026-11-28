@@ -11,7 +11,7 @@ class AuthApi:
     def __init__(self):
         self.client = HttpClient()  # 只写这一行！里面不要有任何参数
 
-    def login(self, email, password):
+    def login(self, email=None, password=None):
         """
         用户登录接口
         """
@@ -22,11 +22,11 @@ class AuthApi:
         payload = {
             "email": email,
             "password": password,
-            "_random": random.randint(1, 100000)  # 【防缓存大招】加个随机数，防止服务器返回缓存
+            "_random": random.randint(1, 100000)
         }
 
         print(f"🚀 正在尝试登录用户: {email}...")
-        resp = self.client.send_request("POST", url, json=payload)
+        resp = self.client.send_request("POST", url, json=payload, raise_error=False)
 
         # 如果登录成功（200），提取 Token
         if resp.status_code == 200:

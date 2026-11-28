@@ -19,13 +19,18 @@ class UserApi(BaseAPI):
             raise_error=False  # 允许 404，由测试自行断言
         )
 
-    def create_user(self, name, job):
-        """新增用户 (原 reqres 风格接口)"""
-        payload = {"name": name, "job": job}
+    def create_user(self, name=None, job=None):
+        """新增用户（原 reqres 风格接口）"""
+        payload = {}
+        if name is not None:
+            payload["name"] = name
+        if job is not None:
+            payload["job"] = job
         return self.client.send_request(
             method="POST",
-            url="/users", # 只写路径
-            json=payload
+            url="/users",
+            json=payload,
+            raise_error = False  # 允许 400，由测试自行断言
         )
 
     def update_user(self, user_id, name, job):
@@ -42,17 +47,19 @@ class UserApi(BaseAPI):
         """删除用户"""
         return self.client.send_request(
             method="DELETE",
-            url=f"/users/{user_id}" # 只写路径
+            url=f"/users/{user_id}",  # 只写路径
+            raise_error=False  # 允许 404，由测试自行断言
         )
 
     def add_user(self, username, email):
-        """新增用户 (你的业务接口)"""
+        """新增用户（你的业务接口）"""
         payload = {
             "username": username,
             "email": email
         }
         return self.client.send_request(
             method="POST",
-            url="/users", # 只写路径
-            json=payload
+            url="/users",
+            json=payload,
+            raise_error=False  # 允许 400，由测试自行断言
         )

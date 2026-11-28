@@ -1,0 +1,9 @@
+[32m2026-11-26 16:26:38[0m | [1mINFO    [0m | [36mutils.http_client[0m:[36msend_request[0m - [1m发送 POST 请求: http://127.0.0.1:5000/api/users[0m
+[32m2026-11-26 16:26:38[0m | [1mINFO    [0m | [36mutils.http_client[0m:[36msend_request[0m - [1m请求参数: {'json': {'name': '史伟', 'job': '供应链主管/专员'}}[0m
+[32m2026-11-26 16:26:38[0m | [1mINFO    [0m | [36mutils.http_client[0m:[36msend_request[0m - [1m响应状态码: 201[0m
+
+本次更新使用的随机数据 -> id：110，姓名：吴玲，职业：人力资源
+[32m2026-11-26 16:26:38[0m | [1mINFO    [0m | [36mutils.http_client[0m:[36msend_request[0m - [1m发送 PUT 请求: http://127.0.0.1:5000/api/users/110[0m
+[32m2026-11-26 16:26:38[0m | [1mINFO    [0m | [36mutils.http_client[0m:[36msend_request[0m - [1m请求参数: {'json': {'name': '吴玲', 'job': '人力资源'}}[0m
+[32m2026-11-26 16:26:38[0m | [1mINFO    [0m | [36mutils.http_client[0m:[36msend_request[0m - [1m响应状态码: 200[0m
+更新接口回显校验通过：吴玲

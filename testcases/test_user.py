@@ -132,3 +132,22 @@ class TestUser:
         assert resp.status_code == 404, f"更新不存在的用户应返回 404，实际：{resp.status_code}"
 
         print("异常场景校验通过：不存在的用户更新返回 404")
+
+    def test_create_user_missing_name(self):
+        """异常场景：创建用户缺少 name 字段应返回 400"""
+        # 只传 job 不传 name，触发 app.py 第 57 行的参数校验
+        resp = self.api.create_user(job=fake.job())
+
+        assert resp.status_code == 400, f"缺少 name 应返回 400，实际：{resp.status_code}"
+        assert "error" in resp.json(), f"响应体应包含 error 字段，实际：{resp.json()}"
+
+        print("异常场景校验通过：缺少 name 返回 400")
+
+    def test_delete_user_not_exist(self):
+        """异常场景：删除不存在的用户应返回 404"""
+        # 操作一个必然不存在的 id，触发 app.py 第 211 行
+        resp = self.api.delete_user(user_id=99999)
+
+        assert resp.status_code == 404, f"删除不存在的用户应返回 404，实际：{resp.status_code}"
+
+        print("异常场景校验通过：不存在的用户删除返回 404")

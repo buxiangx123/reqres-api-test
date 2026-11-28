@@ -18,14 +18,28 @@ class TestAuth:
 
     @pytest.mark.smoke
     def test_login_fail(self):
-        """测试登录失败 (期望得到 400 错误)"""
-        try:
-            self.api.login("sydney@fife.co", "wrong_password")
-            # 如果未抛出异常，说明登录成功（不符合预期），抛出AssertionError
-            pytest.fail("Expected HTTPError but no exception was raised")
-        except requests.exceptions.HTTPError as e:
-            # 验证异常信息包含'400'
-            assert '400' in str(e), f"Expected '400' in error message, got: {e}"
-        except Exception as e:
-            # 其他异常视为用例失败
-            pytest.fail(f"Unexpected exception: {type(e).__name__}: {e}")
+        """异常场景：密码错误应返回 400"""
+        resp = self.api.login(email="morpheus@matrix.com", password="wrong_password")
+
+        assert resp.status_code == 400, f"密码错误应返回 400，实际：{resp.status_code}"
+
+        print("异常场景校验通过：密码错误返回 400")
+
+
+    def test_login_missing_password(self):
+        """异常场景：登录缺少 password 应返回 400"""
+        # 只传 email 不传 password，触发 app.py 第 227 行
+        resp = self.api.login(email="morpheus@matrix.com")
+
+        assert resp.status_code == 400, f"缺少 password 应返回 400，实际：{resp.status_code}"
+
+        print("异常场景校验通过：登录缺 password 返回 400")
+
+    def test_login_missing_email(self):
+        """异常场景：登录缺少 email 应返回 400"""
+        # 只传 password 不传 email
+        resp = self.api.login(password="pistol")
+
+        assert resp.status_code == 400, f"缺少 email 应返回 400，实际：{resp.status_code}"
+
+        print("异常场景校验通过：登录缺 email 返回 400")
