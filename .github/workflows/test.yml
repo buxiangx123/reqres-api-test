@@ -81,32 +81,14 @@ jobs:
               print(cur.fetchone()[1])
           PY
 
-      - name: Start Mock server (Flask)
-        run: |
-          mkdir -p logs
-          FLASK_DEBUG=0 nohup python mock_server/app.py > logs/mock_server.log 2>&1 &
-          python - <<'PY'
-          import socket, time, sys
-          for _ in range(30):
-              with socket.socket() as s:
-                  if s.connect_ex(("127.0.0.1", 5000)) == 0:
-                      print("Mock server 已就绪 (port 5000)")
-                      break
-              time.sleep(1)
-          else:
-              sys.exit("Flask 未在 5000 端口起来")
-          PY
 
       - name: Run pytest
-        run: pytest --alluredir=allure-results
+        run: pytest --alluredir=allure-results --cov=utils --cov=mock_server --cov-report=term-missing --cov-report=xml
         env:
           TEST_ENV: ci
           DB_NAME: reqres_test_ci
         continue-on-error: true
 
-      - name: Dump Flask log on failure
-        if: failure()
-        run: cat logs/mock_server.log || true
 
       - name: Install Allure CLI
         if: always()
