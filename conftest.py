@@ -4,11 +4,14 @@ conftest.py —— pytest 全局配置钩子
   1. 每次运行前自动清空 allure 结果目录（解决"只增不减"问题）
   2. 未来可在此处添加统一的 fixture（如共享 HttpClient、登录态等）
 """
-
+import pytest
 import os
 import shutil
 from datetime import datetime
 import sys
+import threading
+import time
+import requests
 
 def pytest_sessionstart(session):
     """
@@ -47,3 +50,26 @@ def pytest_configure(config):
     with open(os.path.join(env_dir, "environment.properties"), "w", encoding="utf-8") as f:
         for k, v in env_props.items():
             f.write(f"{k}={v}\n")
+
+
+@pytest.fixture(scope="session", autouse=True)
+def mock_server():
+    """在 pytest 进程内启动 Flask，让 coverage 能统计到"""
+    from mock_server.app import app, ensure_seed_data
+    ensure_seed_data()
+
+    server = threading.Thread(
+        target=lambda: app.run(host="127.0.0.1", port=5000, use_reloader=False),
+        daemon=True
+    )
+    server.start()
+
+    # 等待服务就绪
+    for _ in range(30):
+        try:
+            requests.get("http://127.0.0.1:5000/api/users?page=1", timeout=1)
+            break
+        except Exception:
+            time.sleep(0.5)
+
+    yield
