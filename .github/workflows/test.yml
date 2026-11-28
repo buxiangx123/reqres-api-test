@@ -86,7 +86,7 @@ jobs:
         run: pytest --alluredir=allure-results --cov=utils --cov=mock_server --cov-report=term-missing --cov-report=xml
         env:
           TEST_ENV: ci
-        continue-on-error: true
+
 
 
       - name: Install Allure CLI
