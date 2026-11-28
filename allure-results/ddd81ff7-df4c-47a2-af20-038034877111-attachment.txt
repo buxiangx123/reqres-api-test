@@ -1,3 +1,0 @@
-[32m2026-11-26 16:26:37[0m | [1mINFO    [0m | [36mutils.http_client[0m:[36msend_request[0m - [1m发送 GET 请求: http://127.0.0.1:5000/api/users/1[0m
-[32m2026-11-26 16:26:37[0m | [1mINFO    [0m | [36mutils.http_client[0m:[36msend_request[0m - [1m请求参数: {}[0m
-[32m2026-11-26 16:26:37[0m | [1mINFO    [0m | [36mutils.http_client[0m:[36msend_request[0m - [1m响应状态码: 200[0m

@@ -1,7 +1,0 @@
-[32m2026-11-26 16:26:36[0m | [1mINFO    [0m | [36mtestcases.test_business_flow[0m:[36mtest_add_user_and_verify_db[0m - [1m开始执行业务闭环测试，准备注册用户：user_002[0m
-[32m2026-11-26 16:26:36[0m | [1mINFO    [0m | [36mutils.http_client[0m:[36msend_request[0m - [1m发送 POST 请求: http://127.0.0.1:5000/api/users[0m
-[32m2026-11-26 16:26:36[0m | [1mINFO    [0m | [36mutils.http_client[0m:[36msend_request[0m - [1m请求参数: {'json': {'username': 'user_002', 'email': 'user002@test.com'}}[0m
-[32m2026-11-26 16:26:36[0m | [1mINFO    [0m | [36mutils.http_client[0m:[36msend_request[0m - [1m响应状态码: 201[0m
-[32m2026-11-26 16:26:36[0m | [1mINFO    [0m | [36mtestcases.test_business_flow[0m:[36mtest_add_user_and_verify_db[0m - [1m数据库校验通过：id=103 已落库[0m
-
-[数据驱动成功] 用户：user_002 注册成功！

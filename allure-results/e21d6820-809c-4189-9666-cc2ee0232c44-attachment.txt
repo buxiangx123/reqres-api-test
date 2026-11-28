@@ -1,4 +1,0 @@
-[32m2026-11-26 16:26:39[0m | [1mINFO    [0m | [36mutils.http_client[0m:[36msend_request[0m - [1m发送 PUT 请求: http://127.0.0.1:5000/api/users/99999[0m
-[32m2026-11-26 16:26:39[0m | [1mINFO    [0m | [36mutils.http_client[0m:[36msend_request[0m - [1m请求参数: {'json': {'name': '玉红', 'job': '大客户管理'}}[0m
-[32m2026-11-26 16:26:39[0m | [1mINFO    [0m | [36mutils.http_client[0m:[36msend_request[0m - [1m响应状态码: 404[0m
-异常场景校验通过：不存在的用户更新返回 404

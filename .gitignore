@@ -28,3 +28,8 @@ logs/
 # 系统文件
 .DS_Store
 Thumbs.db
+
+# 测试产物（注意连字符，与仓库里实际的目录名一致）
+allure-results/
+.coverage
+coverage.xml
