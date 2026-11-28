@@ -42,7 +42,7 @@ def pytest_configure(config):
         "Python": sys.version.split()[0],
         "Platform": sys.platform,
         "Test Environment": os.getenv("TEST_ENV", "local"),
-        "Database": os.getenv("DB_NAME", "reqres_test"),
+        "Database": os.getenv("DB_NAME", "autotest_db"),
         "Mock Server": "http://127.0.0.1:5000",
         "Run Time": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
     }

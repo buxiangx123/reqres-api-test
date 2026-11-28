@@ -86,7 +86,6 @@ jobs:
         run: pytest --alluredir=allure-results --cov=utils --cov=mock_server --cov-report=term-missing --cov-report=xml
         env:
           TEST_ENV: ci
-          DB_NAME: reqres_test_ci
         continue-on-error: true
 
 
